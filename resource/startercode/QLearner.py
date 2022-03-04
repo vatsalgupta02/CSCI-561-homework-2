@@ -4,8 +4,9 @@ WIN_REWARD = 1.0
 DRAW_REWARD = 0.5
 LOSS_REWARD = 0.0
 
-
 class QLearner:
+
+
     GAME_NUM = 100000
 
     def __init__(self, alpha=.7, gamma=.9, initial_value=0.5, side=None):
@@ -52,6 +53,7 @@ class QLearner:
                     row, col = i, j
         return row, col
 
+
     def move(self, board):
         """ make a move
         """
@@ -81,3 +83,4 @@ class QLearner:
                 q[move[0]][move[1]] = q[move[0]][move[1]] * (1 - self.alpha) + self.alpha * self.gamma * max_q_value
             max_q_value = np.max(q)
         self.history_states = []
+

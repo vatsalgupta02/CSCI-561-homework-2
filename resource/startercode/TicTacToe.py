@@ -1,6 +1,5 @@
 import sys
 from pathlib import Path
-
 sys.path.insert(1, str(Path.cwd()))
 
 from Board import Board
@@ -9,9 +8,9 @@ from QLearner import QLearner
 from PerfectPlayer import PerfectPlayer
 from SmartPlayer import SmartPlayer
 
+
 PLAYER_X = 1
 PLAYER_O = 2
-
 
 def play(board, player1, player2, learn):
     """ Player 1 -> X, X goes first
@@ -31,8 +30,9 @@ def play(board, player1, player2, learn):
     return board.game_result
 
 
+
 def battle(board, player1, player2, iter, learn=False, show_result=True):
-    p1_stats = [0, 0, 0]  # draw, win, lose
+    p1_stats = [0, 0, 0] # draw, win, lose
     for i in range(0, iter):
         result = play(board, player1, player2, learn)
         p1_stats[result] += 1
@@ -41,10 +41,8 @@ def battle(board, player1, player2, iter, learn=False, show_result=True):
     p1_stats = [round(x / iter * 100.0, 1) for x in p1_stats]
     if show_result:
         print('_' * 60)
-        print('{:>15}(X) | Wins:{}% Draws:{}% Losses:{}%'.format(player1.__class__.__name__, p1_stats[1], p1_stats[0],
-                                                                 p1_stats[2]).center(50))
-        print('{:>15}(O) | Wins:{}% Draws:{}% Losses:{}%'.format(player2.__class__.__name__, p1_stats[2], p1_stats[0],
-                                                                 p1_stats[1]).center(50))
+        print('{:>15}(X) | Wins:{}% Draws:{}% Losses:{}%'.format(player1.__class__.__name__, p1_stats[1], p1_stats[0], p1_stats[2]).center(50))
+        print('{:>15}(O) | Wins:{}% Draws:{}% Losses:{}%'.format(player2.__class__.__name__, p1_stats[2], p1_stats[0], p1_stats[1]).center(50))
         print('_' * 60)
         print()
 
@@ -81,8 +79,8 @@ if __name__ == "__main__":
     perfect_q = battle(board, PerfectPlayer(), qlearner, 500)
 
     # summarize game results
-    winning_rate_w_random_player = round(100 - (q_rand[2] + rand_q[1]) / 2, 2)
-    winning_rate_w_smart_player = round(100 - (q_smart[2] + smart_q[1]) / 2, 2)
+    winning_rate_w_random_player  = round(100 -  (q_rand[2] + rand_q[1]) / 2, 2)
+    winning_rate_w_smart_player   = round(100 - (q_smart[2] + smart_q[1]) / 2, 2)
     winning_rate_w_perfect_player = round(100 - (q_perfect[2] + perfect_q[1]) / 2, 2)
 
     print("Summary:")
@@ -106,3 +104,4 @@ if __name__ == "__main__":
 #   output_file = sys.argv[1]
 #    with open(output_file, 'w') as f:
 #        f.write(str(grade) + '\n')
+
