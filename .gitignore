@@ -10,3 +10,8 @@ ipython_config.py
 
 # Miscellaneous
 hw2/
+.DS_Store
+work/.DS_Store
+
+# PyCharm
+.idea/
