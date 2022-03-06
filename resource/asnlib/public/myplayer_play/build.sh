@@ -34,7 +34,7 @@ fi
 echo ""
 
 # prefix="$ASNLIB/public/myplayer_play/"
-prefix="/Users/vatsal/Desktop/USC/Foundations\ of\ AI\ (CSCI-571)/CSCI-561-homework-2/resource/asnlib/public/myplayer_play/"
+prefix="./"
 ta_agent=("random_player") # 1 TA players
 surfix=".py"
 
@@ -59,6 +59,7 @@ play()
 	        rm output.txt
 	    fi
 
+        sleep 0.5
         echo "Black makes move..." >&2
 		eval "$1" >&2
 		let moves+=1
@@ -74,6 +75,7 @@ play()
 	        rm output.txt
 	    fi
 
+        sleep 0.5
 		echo "White makes move..." >&2
 		eval "$2" >&2
 		let moves+=1

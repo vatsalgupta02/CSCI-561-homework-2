@@ -33,8 +33,7 @@ fi
 
 echo ""
 
-# prefix="$ASNLIB/public/myplayer_play/"
-prefix="/Users/vatsal/Desktop/USC/Foundations\ of\ AI\ (CSCI-571)/CSCI-561-homework-2/resource/asnlib/public/myplayer_play/"
+prefix="$ASNLIB/public/myplayer_play/"
 ta_agent=("random_player") # 1 TA players
 surfix=".py"
 
