@@ -30,6 +30,20 @@ class MiniMax():
                     valid.append((i, j))
         return valid
 
+    def cal_liberty(self, board, i, j):
+        # piece_type = self.piece_type
+        count = {
+            board[i][j] : 0,
+        }
+        ally_members = board.ally_dfs(i, j)
+        for member in ally_members:
+            neighbors = board.detect_neighbor(member[0], member[1])
+            for piece in neighbors:
+                # If there is empty space around a piece, it has liberty
+                if board[piece[0]][piece[1]] == 0:
+                    count[board[i][j]] += 1
+        return count
+
     def evaluate(self, b, curr_player):
         _min, _max, _eval_min, _eval_max = 0, 0, 0, 0
         died_max, died_min = 0, 0
@@ -37,11 +51,11 @@ class MiniMax():
             for j in range(5):
                 if b[i][j] == self.piece_type:
                     _max += 1
-                    died_max += b.remove_died_pieces(self.piece_type)
+                    died_max += len(b.remove_died_pieces(self.piece_type))
                     _eval_max += (_max + b.find_liberty(i, j))
                 elif b[i][j] == 3 - self.piece_type:
                     _min += 1
-                    died_min += b.remove_died_pieces(3-self.piece_type)
+                    died_min += len(b.remove_died_pieces(3-self.piece_type))
                     _eval_min += (_min + b.find_liberty(i, j))
         heuristic = _eval_max - _eval_min
         if self.piece_type == curr_player:
@@ -49,8 +63,8 @@ class MiniMax():
         else:
             return -heuristic + died_max
 
-    def minimax(self, ):
-        score = self.evaluate(board)
+    def minimax(self, curr, prev, alpha, beta, isMax, maxDepth):
+        best = 0
 
         pass
 
