@@ -67,9 +67,9 @@ class MiniMax:
                     _eval_min += (_min + self.cal_liberty(b, i, j))
         heuristic = _eval_max - _eval_min
         if self.piece_type == curr_player:
-            return heuristic
+            return heuristic + died_min
         else:
-            return -heuristic
+            return -heuristic + died_max
 
     def minimax(self, curr, prev, alpha, beta, maxDepth):
         best = 0
