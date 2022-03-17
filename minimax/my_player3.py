@@ -1,6 +1,9 @@
 import copy
 import random
 import sys
+
+import numpy as np
+
 from read import readInput
 from write import writeOutput
 from copy import deepcopy
@@ -34,37 +37,39 @@ class MiniMax:
                     valid.append((i, j))
         return valid
 
-    def cal_liberty(self, board, i, j):
+    def cal_liberty(self, b_obj, i, j):
         # piece_type = self.piece_type
+        b_board = b_obj.board
         count = {
-            board[i][j]: 0,
+            b_board[i][j]: 0,
         }
-        ally_members = board.ally_dfs(i, j)
+        ally_members = b_obj.ally_dfs(i, j)
         for member in ally_members:
-            neighbors = board.detect_neighbor(member[0], member[1])
+            neighbors = b_obj.detect_neighbor(member[0], member[1])
             for piece in neighbors:
                 # If there is empty space around a piece, it has liberty
-                if board[piece[0]][piece[1]] == 0:
-                    count[board[i][j]] += 1
-        return count[board[i][j]]
+                if b_board[piece[0]][piece[1]] == 0:
+                    count[b_board[i][j]] += 1
+        return count[b_board[i][j]]
 
     def evaluate(self, b, curr_player):
         _min, _max, _eval_min, _eval_max, died_max, died_min = 0, 0, 0, 0, 0, 0
+        b_board = b.board
         for i in range(5):
             for j in range(5):
-                if b[i][j] == self.piece_type:
+                if b_board[i][j] == self.piece_type:
                     _max += 1
                     died_max += len(b.remove_died_pieces(self.piece_type))
                     _eval_max += (_max + self.cal_liberty(b, i, j))
-                elif b[i][j] == 3 - self.piece_type:
+                elif b_board[i][j] == 3 - self.piece_type:
                     _min += 1
                     died_min += len(b.remove_died_pieces(3-self.piece_type))
                     _eval_min += (_min + self.cal_liberty(b, i, j))
         heuristic = _eval_max - _eval_min
         if self.piece_type == curr_player:
-            return heuristic + died_min
+            return heuristic
         else:
-            return -heuristic + died_max
+            return -heuristic
 
     def minimax(self, curr, prev, alpha, beta, maxDepth):
         best = 0
@@ -123,7 +128,7 @@ class MiniMax:
                                        alpha, beta, 3-player)
 
             if score > best_score:
-                best_score == score
+                best_score = score
 
             opponent_score = -1 * best_score
 
@@ -141,16 +146,24 @@ class MiniMax:
         :param go: Go instance.
         :return: (row, column) coordinate of input.
         '''
-        possible_placements = []
-        for i in range(go.size):
-            for j in range(go.size):
-                if go.valid_place_check(i, j, self.piece_type, test_check=True):
-                    possible_placements.append((i, j))
+        # possible_placements = []
+        # for i in range(go.size):
+        #     for j in range(go.size):
+        #         if go.valid_place_check(i, j, self.piece_type, test_check=True):
+        #             possible_placements.append((i, j))
+        #
+        # if not possible_placements:
+        #     return "PASS"
+        # else:
+        #     return random.choice(possible_placements)
+        curr = go.board
+        prev = go.previous_board
 
-        if not possible_placements:
-            return "PASS"
+        action = self.minimax(go, prev, -np.Inf, -np.Inf, 2)
+        if len(action) == 0:
+            return 'PASS'
         else:
-            return random.choice(possible_placements)
+            return random.choice(action)
 
 
 if __name__ == "__main__":
