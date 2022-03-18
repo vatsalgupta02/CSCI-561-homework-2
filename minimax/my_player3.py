@@ -76,7 +76,6 @@ class MiniMax:
         curr_board_copy = copy.deepcopy(curr)
         moves = []
         valid_moves = self.valid_moves_list(curr_board_copy, self.piece_type)
-        # TODO: if len(valid) == 0: then pass
 
         for m in valid_moves:
             fut = self.move(curr, m[0], m[1], self.piece_type)
@@ -124,7 +123,7 @@ class MiniMax:
         valid_moves = self.valid_moves_list(curr_board_copy, player)
         for m in valid_moves:
             future_board = self.move(curr_board_copy, m[0], m[1], player)
-            score = -1 * self.max_turn(future_board, curr_board, maxDepth-1,
+            score = -1 * self.min_turn(future_board, curr_board, maxDepth-1,
                                        alpha, beta, 3-player)
 
             if score > best_score:
