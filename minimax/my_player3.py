@@ -118,11 +118,13 @@ def valid_moves_list(b, piece_type):
     :param piece_type:
     :return:
     '''
-    valid = []
+    # valid = []
+
+    valid=set()
     for i in range(5):
         for j in range(5):
             if valid_place_check(b, i, j, piece_type):
-                valid.append((i, j))
+                valid.add((i, j))
     return valid
 
 
@@ -143,23 +145,46 @@ def move(curr, i, j, piece_type):
     return temp_rdp
 
 
+# def evaluate(b, curr_player):
+#     _min, _max, _eval_min, _eval_max, died_max, died_min = 0, 0, 0, 0, 0, 0
+#     for i in range(5):
+#         for j in range(5):
+#             if b[i][j] == COLOR:
+#                 _max += 1
+#                 died_max += len(find_dead_pieces(b, curr_player))
+#                 _eval_max += (_max + calc_liberty(b, i, j))
+#             elif b[i][j] == 3 - COLOR:
+#                 _min += 1
+#                 died_min += len(find_dead_pieces(b, curr_player))
+#                 _eval_min += (_min + calc_liberty(b, i, j))
+#     heuristic = _eval_max - _eval_min
+#     if COLOR == curr_player:
+#         return heuristic
+#     else:
+#         return -heuristic
+
 def evaluate(b, curr_player):
-    _min, _max, _eval_min, _eval_max, died_max, died_min = 0, 0, 0, 0, 0, 0
+    black, white = -3, 3
+    bDanger, wDanger = 0, 0
     for i in range(5):
         for j in range(5):
-            if b[i][j] == COLOR:
-                _max += 1
-                died_max += len(find_dead_pieces(b, curr_player))
-                _eval_max += (_max + calc_liberty(b, i, j))
-            elif b[i][j] == 3 - COLOR:
-                _min += 1
-                died_min += len(find_dead_pieces(b, curr_player))
-                _eval_min += (_min + calc_liberty(b, i, j))
-    heuristic = _eval_max - _eval_min
-    if COLOR == curr_player:
-        return heuristic
-    else:
-        return -heuristic
+            if b[i][j] == 1:
+                lib = calc_liberty(b, i, j)
+                if lib < 2:
+                    bDanger += 1
+                black += 1
+            elif b[i][j] == 2:
+                lib = calc_liberty(b, i, j)
+                if lib < 2:
+                    wDanger += 1
+                white += 1
+    if curr_player == 1:
+        heuristic = (10*black) - (10*white) + (2*wDanger) - (1.5*bDanger)
+    elif curr_player == 2:
+        heuristic = (10*white) - (10*black) + (2*bDanger) - (1.5*wDanger)
+    
+    return heuristic
+
 
 
 def minimax(curr_board_copy, alpha, beta, maxDepth, piece_type):
@@ -222,7 +247,17 @@ def max_turn(curr_board, maxDepth, alpha, beta, player):
     return best_score
 
 def driver(curr_board, prev_board, piece_type, maxDepth):
-    action = minimax(curr_board, -np.Inf, np.Inf, maxDepth, piece_type)
+    c, c_bool = 0, False
+    for i in range(5):
+        for j in range(5):
+            if (curr_board[i][j] != 0 and i == 2 and j == 2):
+                c_bool = True
+                c += 1
+    if (c == 0 and piece_type == 1) or (c == 1 and piece_type == 2 and not c_bool):
+        action = [(2, 2)]
+    else:
+        action = minimax(curr_board, -np.Inf, np.Inf, maxDepth, piece_type)
+
     if len(action) == 0:
         return 'PASS'
     return random.choice(action)
