@@ -6,7 +6,7 @@
 # TodoList:
 
 def writeOutput(result,
-                path="./output.txt"):
+                path="output.txt"):
     res = ""
     if result == "PASS":
         res = "PASS"
@@ -17,13 +17,13 @@ def writeOutput(result,
         f.write(res)
 
 
-def writePass(path="./input.txt"):
+def writePass(path="input.txt"):
     with open(path, 'w') as f:
         f.write("PASS")
 
 
 def writeNextInput(piece_type, previous_board, board,
-                   path="./input.txt"):
+                   path="input.txt"):
     res = ""
     res += str(piece_type) + "\n"
     for item in previous_board:

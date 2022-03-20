@@ -5,7 +5,7 @@
 # Description:
 # TodoList:
 
-def readInput(n, path="./input.txt"):
+def readInput(n, path="input.txt"):
 
     with open(path, 'r') as f:
         lines = f.readlines()
@@ -17,7 +17,7 @@ def readInput(n, path="./input.txt"):
 
         return piece_type, previous_board, board
 
-def readOutput(path="./output.txt"):
+def readOutput(path="output.txt"):
     with open(path, 'r') as f:
         position = f.readline().strip().split(',')
 
